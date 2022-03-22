@@ -1,5 +1,9 @@
 package temp
 
+import (
+	"fmt"
+)
+
 func findDayOfWarmerTemp(temp int, tempDay int, tempToDay map[int][]int) int {
 	var dayOfWarmerTemp int
 	for j := temp + 1; j <= 100; j++ {
@@ -19,7 +23,7 @@ func findDayOfWarmerTemp(temp int, tempDay int, tempToDay map[int][]int) int {
 	return dayOfWarmerTemp
 }
 
-func dailyTemperatures(temperatures []int) []int {
+func dailyTemperatures1(temperatures []int) []int {
 	tempToDay := make(map[int][]int)
 	for i, temp := range temperatures {
 		tempToDay[temp] = append(tempToDay[temp], i)
@@ -38,14 +42,38 @@ const (
 
 type Node struct {
 	key   int
-	val   int
+	vals  []int
 	left  *Node
 	right *Node
 	color bool
 }
 
+func (x *Node) String() string {
+	return fmt.Sprintf("[%d/%v]", x.key, x.vals)
+}
+
+func compareTo(k int, x *Node) int {
+	if k < x.key {
+		return -1
+	} else if k > x.key {
+		return 1
+	}
+	return 0
+}
+
 type RedBlackBST struct {
 	root *Node
+}
+
+func StringRecur(x *Node) string {
+	if x == nil {
+		return ""
+	}
+	return fmt.Sprintf("%s-[%s]-%s", StringRecur(x.left), x, StringRecur(x.right))
+}
+
+func (t *RedBlackBST) String() string {
+	return StringRecur(t.root)
 }
 
 func (_ *RedBlackBST) isRed(x *Node) bool {
@@ -79,18 +107,19 @@ func (_ *RedBlackBST) flipColors(h *Node) {
 	h.right.color = BLACK
 }
 
-func (t *RedBlackBST) Get(k int) (int, bool) {
+func (t *RedBlackBST) Get(k int) ([]int, bool) {
 	x := t.root
 	for x != nil {
-		if x.key < k {
+		cmp := compareTo(k, x)
+		if cmp < 0 {
 			x = x.left
-		} else if x.key > k {
+		} else if cmp > 0 {
 			x = x.right
 		} else {
-			return x.val, true
+			return x.vals, true
 		}
 	}
-	return 0, false
+	return nil, false
 }
 
 func (t *RedBlackBST) Put(k int, v int) {
@@ -100,14 +129,15 @@ func (t *RedBlackBST) Put(k int, v int) {
 
 func (t *RedBlackBST) put(x *Node, k int, v int) *Node {
 	if x == nil {
-		return &Node{key: k, val: v, color: RED}
+		return &Node{key: k, vals: []int{v}, color: RED}
 	}
-	if x.key < k {
+	cmp := compareTo(k, x)
+	if cmp < 0 {
 		x.left = t.put(x.left, k, v)
-	} else if x.key > k {
+	} else if cmp > 0 {
 		x.right = t.put(x.right, k, v)
 	} else {
-		x.val = v
+		x.vals = append(x.vals, v)
 	}
 
 	if t.isRed(x.right) && !t.isRed(x.left) {
@@ -119,6 +149,67 @@ func (t *RedBlackBST) put(x *Node, k int, v int) *Node {
 	if t.isRed(x.left) && t.isRed(x.right) {
 		t.flipColors(x)
 	}
-
 	return x
+}
+
+func (t *RedBlackBST) nodes(lo int, hi int) []*Node {
+	var nodes []*Node
+	t.nodesRecur(lo, hi, t.root, &nodes)
+	return nodes
+}
+
+func (t *RedBlackBST) nodesRecur(lo int, hi int, x *Node, nodes *[]*Node) {
+	if x == nil {
+		return
+	}
+	cmpLo := compareTo(lo, x)
+	cmpHi := compareTo(hi, x)
+	if cmpLo < 0 {
+		t.nodesRecur(lo, hi, x.left, nodes)
+	}
+	if cmpLo <= 0 && cmpHi >= 0 {
+		*nodes = append(*nodes, x)
+	}
+	if cmpHi > 0 {
+		t.nodesRecur(lo, hi, x.right, nodes)
+	}
+}
+
+func (t *RedBlackBST) FindDayOfWarmerTemp(temp int, day int) int {
+	nodes := t.nodes(temp+1, 100)
+	earliestDay := 0
+	for _, node := range nodes {
+		days := node.vals
+		for _, d := range days {
+			diffInDays := d - day
+			if earliestDay == 0 {
+				if diffInDays > 0 {
+					earliestDay = diffInDays
+					if earliestDay == 1 {
+						return earliestDay
+					}
+				}
+			} else {
+				if diffInDays > 0 && diffInDays < earliestDay {
+					earliestDay = diffInDays
+					if earliestDay == 1 {
+						return earliestDay
+					}
+				}
+			}
+		}
+	}
+	return earliestDay
+}
+
+func dailyTemperatures2(temperatures []int) []int {
+	tempTree := RedBlackBST{}
+	for day, temp := range temperatures {
+		tempTree.Put(temp, day)
+	}
+	answer := make([]int, len(temperatures))
+	for day, temp := range temperatures {
+		answer[day] = tempTree.FindDayOfWarmerTemp(temp, day)
+	}
+	return answer
 }

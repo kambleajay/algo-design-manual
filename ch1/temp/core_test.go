@@ -1,6 +1,7 @@
 package temp
 
 import (
+	"fmt"
 	"math/rand"
 	"reflect"
 	"testing"
@@ -47,12 +48,36 @@ func TestNode(t *testing.T) {
 	tree.Put(47, 47)
 	tree.Put(5, 5)
 	tree.Put(39, 39)
+	fmt.Printf("tree = %v\n", tree)
 	a, ok := tree.Get(47)
-	if !ok || a != 47 {
+	if !ok || !reflect.DeepEqual(a, []int{47}) {
 		t.Errorf("got: %d, want: %d\n", a, 47)
 	}
 	b, ok := tree.Get(22)
 	if ok {
 		t.Errorf("got: %d, it should be 0\n", b)
 	}
+}
+
+func TestPut(t *testing.T) {
+	tree := RedBlackBST{}
+	tree.Put(10, 10)
+	tree.Put(23, 23)
+	tree.Put(57, 57)
+	fmt.Printf("root: %s\n", tree.root)
+	fmt.Printf("left: %s\n", tree.root.left)
+	fmt.Printf("right: %s\n", tree.root.right)
+	fmt.Printf("tree: %s\n", &tree)
+}
+
+func TestNodes(t *testing.T) {
+	tree := RedBlackBST{}
+	tree.Put(10, 10)
+	tree.Put(23, 23)
+	tree.Put(57, 57)
+	tree.Put(25, 25)
+	tree.Put(33, 33)
+	tree.Put(42, 42)
+	fmt.Printf("tree: %s\n", &tree)
+	fmt.Printf("nodes: %v\n", tree.nodes(20, 30))
 }
