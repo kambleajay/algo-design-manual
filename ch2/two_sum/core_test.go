@@ -13,6 +13,7 @@ func TestTwoSum(t *testing.T) {
 	}{
 		{[]int{2, 7, 11, 15}, 9, []int{0, 1}},
 		{[]int{3, 2, 4}, 6, []int{1, 2}},
+		{[]int{4, -2, 5, 0, 6, 3, 2, 7}, 1, []int{1, 5}},
 	}
 	for _, test := range tests {
 		copyOfInput := make([]int, len(test.nums))
