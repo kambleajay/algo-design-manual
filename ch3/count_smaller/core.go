@@ -132,36 +132,22 @@ func (t *RedBlackBST) put(x *Node, k, v int) *Node {
 	return x
 }
 
-//func countSmaller1(nums []int) []int {
-//	var answer []int
-//	var count int
-//	for i := 0; i < len(nums); i++ {
-//		count = 0
-//		for j := i + 1; j < len(nums) && j > i; j++ {
-//			if nums[j] < nums[i] {
-//				count++
-//			}
-//		}
-//		answer = append(answer, count)
-//	}
-//	return answer
-//}
-//
-//func countSmaller2(nums []int) []int {
-//	answer := make([]int, len(nums))
-//	bst := RedBlackBST{}
-//	for j := len(nums) - 1; j >= 0; j-- {
-//		if j == len(nums)-1 {
-//			answer[j] = 0
-//		} else {
-//			answer[j] = bst.Rank(nums[j])
-//		}
-//		bst.Put(nums[j], nums[j])
-//	}
-//	return answer
-//}
+func countSmaller1(nums []int) []int {
+	var answer []int
+	var count int
+	for i := 0; i < len(nums); i++ {
+		count = 0
+		for j := i + 1; j < len(nums) && j > i; j++ {
+			if nums[j] < nums[i] {
+				count++
+			}
+		}
+		answer = append(answer, count)
+	}
+	return answer
+}
 
-func countSmaller(nums []int) []int {
+func countSmaller2(nums []int) []int {
 	answer := make([]int, len(nums))
 	bst := RedBlackBST{}
 	for j := len(nums) - 1; j >= 0; j-- {
@@ -173,4 +159,48 @@ func countSmaller(nums []int) []int {
 		bst.Put(nums[j], nums[j])
 	}
 	return answer
+}
+
+func query(left, right int, tree []int, size int) int {
+	l, r := left+size, right+size
+	var count int
+	for l < r {
+		if l%2 == 1 {
+			count += tree[l]
+			l++
+		}
+		if r%2 == 1 {
+			r--
+			count += tree[r]
+		}
+		l /= 2
+		r /= 2
+	}
+	return count
+}
+
+func update(index, val int, tree []int, size int) {
+	k := index + size
+	tree[k] += val
+	for k > 1 {
+		k /= 2
+		c1, c2 := tree[k*2], tree[(k*2)+1]
+		tree[k] = c1 + c2
+	}
+}
+
+func countSmaller3(nums []int) []int {
+	offset, size := 10000, (10000*2)+1
+	tree := make([]int, size*2)
+	answer := make([]int, len(nums))
+	for j := len(nums) - 1; j >= 0; j-- {
+		count := query(0, nums[j]+offset, tree, size)
+		answer[j] = count
+		update(nums[j]+offset, 1, tree, size)
+	}
+	return answer
+}
+
+func countSmaller(nums []int) []int {
+	return countSmaller3(nums)
 }
