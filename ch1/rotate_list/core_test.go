@@ -55,7 +55,7 @@ func TestRotateRight(t *testing.T) {
 	}
 	for _, test := range tests {
 		//fmt.Printf("%v, %d\n", test.list, test.k)
-		got := rotateRight(test.list, test.k)
+		got := rotateRight2(test.list, test.k)
 		vals := values(got)
 		if !reflect.DeepEqual(vals, test.want) {
 			t.Errorf("for %v rotated list must be %v, but was %v", test.list, test.want, vals)

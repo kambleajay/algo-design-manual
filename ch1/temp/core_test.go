@@ -22,7 +22,7 @@ func TestDailyTemperatures(t *testing.T) {
 		{[]int{89, 62, 70, 58, 47, 47, 46, 76, 100, 70}, []int{8, 1, 5, 4, 3, 2, 1, 1, 0, 0}},
 	}
 	for _, test := range tests {
-		if got := dailyTemperatures(test.temperatures); !reflect.DeepEqual(got, test.want) {
+		if got := dailyTemperatures3(test.temperatures); !reflect.DeepEqual(got, test.want) {
 			t.Errorf("dailyTemperatures(%v) = %v (should be %v)\n", test.temperatures, got, test.want)
 		}
 	}

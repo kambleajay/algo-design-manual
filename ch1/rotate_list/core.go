@@ -93,3 +93,28 @@ func rotateRight(head *ListNode, k int) *ListNode {
 
 	return first
 }
+
+func rotateRight2(head *ListNode, k int) *ListNode {
+	if head == nil || head.Next == nil {
+		return head
+	}
+	oldTail := head
+	n := 1
+	//count the number of nodes
+	for ; oldTail.Next != nil; n++ {
+		oldTail = oldTail.Next
+	}
+	oldTail.Next = head //close the ring
+
+	//find new tail and new head
+	newTail := head
+	for i := 0; i < n-(k%n)-1; i++ {
+		newTail = newTail.Next
+	}
+	newHead := newTail.Next
+
+	//break the ring
+	newTail.Next = nil
+
+	return newHead
+}
