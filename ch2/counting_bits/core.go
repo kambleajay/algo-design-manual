@@ -18,3 +18,11 @@ func countBits(n int) []int {
 	}
 	return answer
 }
+
+func countBits2(n int) []int {
+	answer := make([]int, n+1)
+	for i := 1; i < n+1; i++ {
+		answer[i] = answer[i&(i-1)] + 1
+	}
+	return answer
+}
