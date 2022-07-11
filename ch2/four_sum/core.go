@@ -13,37 +13,38 @@ func fourSum(nums []int, target int) [][]int {
 		return [][]int{}
 	}
 	sort.Sort(IntSlice(nums))
-	return kSum(nums, target, 4)
+	return kSum(nums, 0, 4, target)
 }
 
-func kSum(nums []int, target, k int) [][]int {
+func kSum(nums []int, start, k, target int) [][]int {
 	var res [][]int
-	if nums == nil || len(nums) == 0 {
+	if start == len(nums) {
 		return res
 	}
-	if nums[0] > target/k || nums[len(nums)-1] < target/k {
+	avg := target / k
+	if nums[start] > avg || nums[len(nums)-1] < avg {
 		return res
 	}
 	if k == 2 {
-		return twoSum(nums, target)
+		return twoSum(nums, start, target)
 	}
-	for i, _ := range nums {
-		if i == 0 || nums[i] != nums[i-1] {
-			resRest := kSum(nums[i+1:], target-nums[i], k-1)
-			for _, rr := range resRest {
-				res = append(res, append([]int{nums[i]}, rr...))
+	for i := start; i < len(nums); i++ {
+		if i == start || nums[i] != nums[i-1] {
+			for _, subset := range kSum(nums, i+1, k-1, target-nums[i]) {
+				subset = append([]int{nums[i]}, subset...)
+				res = append(res, subset)
 			}
 		}
 	}
 	return res
 }
 
-func twoSum(nums []int, target int) [][]int {
+func twoSum(nums []int, start, target int) [][]int {
 	var res [][]int
-	lo, hi := 0, len(nums)-1
-	for lo < hi {
+	lo, hi := start, len(nums)-1
+	for hi > lo {
 		sum := nums[lo] + nums[hi]
-		if sum < target || (lo > 0 && nums[lo] == nums[lo-1]) {
+		if sum < target || (lo > start && nums[lo] == nums[lo-1]) {
 			lo++
 		} else if sum > target || (hi < len(nums)-1 && nums[hi] == nums[hi+1]) {
 			hi--
