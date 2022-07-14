@@ -16,7 +16,7 @@ func TestIsValidBST(t *testing.T) {
 		{&TreeNode{5, &TreeNode{Val: 4}, &TreeNode{6, &TreeNode{Val: 3}, &TreeNode{Val: 7}}}, false},
 	}
 	for _, test := range tests {
-		if got := isValidBST(test.root); test.want != got {
+		if got := isValidBST2(test.root); test.want != got {
 			t.Errorf("isValidBST(%#v) should be %t, but was %t", test.root, test.want, got)
 		}
 	}

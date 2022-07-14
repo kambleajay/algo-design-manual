@@ -201,6 +201,41 @@ func countSmaller3(nums []int) []int {
 	return answer
 }
 
+func lsb(n int) int {
+	return n & -n
+}
+
+func queryBit(i int, tree []int) int {
+	result := 0
+	for i >= 1 {
+		result += tree[i]
+		i -= lsb(i)
+	}
+	return result
+}
+
+func updateBit(i int, val int, tree []int, size int) {
+	i = i + 1
+	for i < size {
+		tree[i] += val
+		i += lsb(i)
+	}
+}
+
+func countSmaller4(nums []int) []int {
+	offset := 10000
+	size := (10000 * 2) + 2
+	tree := make([]int, size)
+	N := len(nums)
+	answer := make([]int, N)
+	for i := N - 1; i >= 0; i-- {
+		count := queryBit(nums[i]+offset, tree)
+		answer[i] = count
+		updateBit(nums[i]+offset, 1, tree, size)
+	}
+	return answer
+}
+
 func countSmaller(nums []int) []int {
-	return countSmaller3(nums)
+	return countSmaller4(nums)
 }
