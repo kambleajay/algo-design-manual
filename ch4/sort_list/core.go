@@ -88,36 +88,37 @@ func sortList1(head *ListNode) *ListNode {
 	return newHead
 }
 
-func merge(l1 *ListNode, l2 *ListNode) *ListNode {
+func merge(left *ListNode, right *ListNode) *ListNode {
 	head := &ListNode{}
 	tail := head
-	for l1 != nil && l2 != nil {
-		if l1.Val < l2.Val {
-			tail.Next = l1
-			l1 = l1.Next
+	for left != nil && right != nil {
+		if left.Val < right.Val {
+			tail.Next = left
+			left = left.Next
 		} else {
-			tail.Next = l2
-			l2 = l2.Next
+			tail.Next = right
+			right = right.Next
 		}
 		tail = tail.Next
 	}
-	if l1 == nil {
-		tail.Next = l2
+	if left == nil {
+		tail.Next = right
 	} else {
-		tail.Next = l1
+		tail.Next = left
 	}
 	return head.Next
 }
 
 func getMid(head *ListNode) *ListNode {
-	var slow *ListNode
-	for head != nil && head.Next != nil {
+	var slow, fast *ListNode
+	slow, fast = nil, head
+	for fast != nil && fast.Next != nil {
 		if slow == nil {
 			slow = head
 		} else {
 			slow = slow.Next
 		}
-		head = head.Next.Next
+		fast = fast.Next.Next
 	}
 	mid := slow.Next
 	slow.Next = nil
@@ -135,5 +136,5 @@ func sortList2(head *ListNode) *ListNode {
 }
 
 func sortList(head *ListNode) *ListNode {
-	return sortList1(head)
+	return sortList2(head)
 }
