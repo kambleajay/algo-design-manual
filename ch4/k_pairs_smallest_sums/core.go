@@ -1,8 +1,8 @@
 package k_pairs_smallest_sums
 
 type Node struct {
-	n1 int
-	n2 []int
+	elemFromFirst int
+	secondArray   []int
 }
 
 type MinPQ struct {
@@ -21,8 +21,9 @@ func (queue *MinPQ) isEmpty() bool {
 }
 
 func (queue *MinPQ) greater(i, j int) bool {
-	s1 := queue.nodes[i].n1 + queue.nodes[i].n2[0]
-	s2 := queue.nodes[j].n1 + queue.nodes[j].n2[0]
+	nodeI, nodeJ := queue.nodes[i], queue.nodes[j]
+	s1 := nodeI.elemFromFirst + nodeI.secondArray[0]
+	s2 := nodeJ.elemFromFirst + nodeJ.secondArray[0]
 	return s1 > s2
 }
 
@@ -71,7 +72,7 @@ func (queue *MinPQ) delMin() *Node {
 	queue.nodes[1], queue.nodes[queue.N] = queue.nodes[queue.N], queue.nodes[1]
 	queue.N--
 	queue.nodes[queue.N+1] = nil
-	if queue.N > 0 && queue.N == len(queue.nodes)-1/4 {
+	if queue.N > 0 && queue.N == len(queue.nodes)/4 {
 		queue.resize(len(queue.nodes) / 2)
 	}
 	queue.sink(1)
@@ -86,9 +87,9 @@ func kSmallestPairs(nums1 []int, nums2 []int, k int) [][]int {
 	var res [][]int
 	for !pq.isEmpty() && k > 0 {
 		minNode := pq.delMin()
-		res = append(res, []int{minNode.n1, minNode.n2[0]})
-		if len(minNode.n2) > 1 {
-			pq.insert(&Node{minNode.n1, minNode.n2[1:]})
+		res = append(res, []int{minNode.elemFromFirst, minNode.secondArray[0]})
+		if len(minNode.secondArray) > 1 {
+			pq.insert(&Node{minNode.elemFromFirst, minNode.secondArray[1:]})
 		}
 		k--
 	}
