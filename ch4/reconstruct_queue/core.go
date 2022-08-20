@@ -2,7 +2,7 @@ package reconstruct_queue
 
 import "sort"
 
-func reconstructQueue(people [][]int) [][]int {
+func reconstructQueue1(people [][]int) [][]int {
 	sort.Slice(people, func(i, j int) bool {
 		height1, kIndex1 := people[i][0], people[i][1]
 		height2, kIndex2 := people[j][0], people[j][1]
@@ -22,4 +22,8 @@ func reconstructQueue(people [][]int) [][]int {
 		}
 	}
 	return res
+}
+
+func reconstructQueue(people [][]int) [][]int {
+	return reconstructQueue2(people)
 }
