@@ -53,6 +53,19 @@ func (queue *MinPQ) insert(n *Node) {
 	queue.swim(queue.N)
 }
 
+func (queue *MinPQ) insertAll(nums1 []int, nums2 []int) {
+	for _, n1 := range nums1 {
+		if queue.N == len(queue.nodes)-1 {
+			queue.resize(2 * len(queue.nodes))
+		}
+		queue.N++
+		queue.nodes[queue.N] = &Node{elemFromFirst: n1, secondArray: nums2}
+	}
+	for i := queue.N / 2; i >= 1; i-- {
+		queue.sink(i)
+	}
+}
+
 func (queue *MinPQ) sink(k int) {
 	for 2*k <= queue.N {
 		j := 2 * k
@@ -79,11 +92,12 @@ func (queue *MinPQ) delMin() *Node {
 	return min
 }
 
-func kSmallestPairs(nums1 []int, nums2 []int, k int) [][]int {
+func kSmallestPairs1(nums1 []int, nums2 []int, k int) [][]int {
 	pq := NewMinPQ()
-	for _, n1 := range nums1 {
-		pq.insert(&Node{n1, nums2})
-	}
+	//for _, n1 := range nums1 {
+	//	pq.insert(&Node{n1, nums2})
+	//}
+	pq.insertAll(nums1, nums2)
 	var res [][]int
 	for !pq.isEmpty() && k > 0 {
 		minNode := pq.delMin()
@@ -94,4 +108,8 @@ func kSmallestPairs(nums1 []int, nums2 []int, k int) [][]int {
 		k--
 	}
 	return res
+}
+
+func kSmallestPairs(nums1 []int, nums2 []int, k int) [][]int {
+	return kSmallestPairs1(nums1, nums2, k)
 }
