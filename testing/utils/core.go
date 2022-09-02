@@ -38,3 +38,19 @@ func ContainsAll(xs, ys [][]int) bool {
 	sort.Sort(Int2DSlice(ys))
 	return reflect.DeepEqual(xs, ys)
 }
+
+func Contains(a []int, x int) bool {
+	for _, elem := range a {
+		if elem == x {
+			return true
+		}
+	}
+	return false
+}
+
+func Min(a, b int) int {
+	if a < b {
+		return a
+	}
+	return b
+}
