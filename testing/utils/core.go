@@ -39,6 +39,15 @@ func ContainsAll(xs, ys [][]int) bool {
 	return reflect.DeepEqual(xs, ys)
 }
 
+func ContainsAllIntSlice(xs, ys []int) bool {
+	if len(xs) != len(ys) {
+		return false
+	}
+	sort.Sort(IntSlice(xs))
+	sort.Sort(IntSlice(ys))
+	return reflect.DeepEqual(xs, ys)
+}
+
 func Contains(a []int, x int) bool {
 	for _, elem := range a {
 		if elem == x {
