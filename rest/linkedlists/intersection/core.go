@@ -1,11 +1,8 @@
 package intersection
 
-type ListNode struct {
-	Val  int
-	Next *ListNode
-}
+import ll "algo/rest/linkedlists"
 
-func getIntersectionNode(headA, headB *ListNode) *ListNode {
+func getIntersectionNode(headA, headB *ll.ListNode) *ll.ListNode {
 	p1, p2 := headA, headB
 	for p1 != p2 {
 		if p1 == nil {

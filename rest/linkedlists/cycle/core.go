@@ -1,11 +1,8 @@
 package cycle
 
-type ListNode struct {
-	Val  int
-	Next *ListNode
-}
+import ll "algo/rest/linkedlists"
 
-func hasCycle(head *ListNode) bool {
+func hasCycle(head *ll.ListNode) bool {
 	slow, fast := head, head
 	for fast != nil && fast.Next != nil {
 		slow = slow.Next

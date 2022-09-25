@@ -1,12 +1,9 @@
 package reverse
 
-type ListNode struct {
-	Val  int
-	Next *ListNode
-}
+import ll "algo/rest/linkedlists"
 
-func reverseList(head *ListNode) *ListNode {
-	var pred *ListNode
+func reverseList(head *ll.ListNode) *ll.ListNode {
+	var pred *ll.ListNode
 	curr := head
 
 	for curr != nil {

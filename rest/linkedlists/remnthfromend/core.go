@@ -1,11 +1,8 @@
 package remnthfromend
 
-type ListNode struct {
-	Val  int
-	Next *ListNode
-}
+import ll "algo/rest/linkedlists"
 
-func removeNthFromEnd(head *ListNode, n int) *ListNode {
+func removeNthFromEnd(head *ll.ListNode, n int) *ll.ListNode {
 	curr := head
 	for i := 0; i < n; i++ {
 		curr = curr.Next

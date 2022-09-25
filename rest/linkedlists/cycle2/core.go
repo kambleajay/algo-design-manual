@@ -1,11 +1,8 @@
 package cycle2
 
-type ListNode struct {
-	Val  int
-	Next *ListNode
-}
+import ll "algo/rest/linkedlists"
 
-func intersection(head *ListNode) *ListNode {
+func intersection(head *ll.ListNode) *ll.ListNode {
 	slow, fast := head, head
 	for fast != nil && fast.Next != nil {
 		slow = slow.Next
@@ -17,7 +14,7 @@ func intersection(head *ListNode) *ListNode {
 	return nil
 }
 
-func detectCycle(head *ListNode) *ListNode {
+func detectCycle(head *ll.ListNode) *ll.ListNode {
 	isec := intersection(head)
 	if isec == nil {
 		return nil
