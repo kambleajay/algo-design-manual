@@ -63,3 +63,35 @@ func Min(a, b int) int {
 	}
 	return b
 }
+
+type String2DSlice [][]string
+
+func (xs String2DSlice) Len() int { return len(xs) }
+func (xs String2DSlice) Less(i, j int) bool {
+	if len(xs[i]) != len(xs[j]) {
+		return len(xs[i]) < len(xs[j])
+	}
+	for m := 0; m < len(xs[i]); m++ {
+		if xs[i][m] != xs[j][m] {
+			return xs[i][m] < xs[j][m]
+		}
+	}
+	return false
+}
+func (xs String2DSlice) Swap(i, j int) { xs[i], xs[j] = xs[j], xs[i] }
+
+func Equals(xs, ys [][]string) bool {
+	sort.Sort(String2DSlice(xs))
+	sort.Sort(String2DSlice(ys))
+	for _, x := range xs {
+		sort.Slice(x, func(i, j int) bool {
+			return x[i] < x[j]
+		})
+	}
+	for _, y := range ys {
+		sort.Slice(y, func(i, j int) bool {
+			return y[i] < y[j]
+		})
+	}
+	return reflect.DeepEqual(xs, ys)
+}
