@@ -1,6 +1,18 @@
-package array
+package circular
 
-import "testing"
+import (
+	"algo/rest/questack/queue/circular/array"
+	"algo/rest/questack/queue/circular/list"
+	"testing"
+)
+
+func arrayQueue(k int) array.MyCircularQueue {
+	return array.Constructor(k)
+}
+
+func listQueue(k int) list.MyCircularQueue {
+	return list.Constructor(k)
+}
 
 type Queue struct {
 	size int
@@ -48,11 +60,11 @@ func TestCircularQueue(t *testing.T) {
 			Enqueue{12, true}, Dequeue{true}, IsFull{false}, IsFull{false}, Front{12}},
 	}
 	for i, test := range tests {
-		var q MyCircularQueue
+		var q list.MyCircularQueue
 		for _, command := range test {
 			switch command := command.(type) {
 			case Queue:
-				q = Constructor(command.size)
+				q = listQueue(command.size)
 			case Enqueue:
 				if got := q.EnQueue(command.n); got != command.want {
 					t.Errorf("[%d] Enqueue(%d) = %t, want %t", i+1, command.n, got, command.want)
