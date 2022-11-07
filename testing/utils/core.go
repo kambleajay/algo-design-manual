@@ -48,6 +48,21 @@ func ContainsAllIntSlice(xs, ys []int) bool {
 	return reflect.DeepEqual(xs, ys)
 }
 
+type StringSlice []string
+
+func (p StringSlice) Len() int           { return len(p) }
+func (p StringSlice) Less(i, j int) bool { return p[i] < p[j] }
+func (p StringSlice) Swap(i, j int)      { p[i], p[j] = p[j], p[i] }
+
+func ContainsAllStringSlice(xs, ys []string) bool {
+	if len(xs) != len(ys) {
+		return false
+	}
+	sort.Sort(StringSlice(xs))
+	sort.Sort(StringSlice(ys))
+	return reflect.DeepEqual(xs, ys)
+}
+
 func Contains(a []int, x int) bool {
 	for _, elem := range a {
 		if elem == x {
