@@ -110,3 +110,12 @@ func Equals(xs, ys [][]string) bool {
 	}
 	return reflect.DeepEqual(xs, ys)
 }
+
+func NotIn(x int, xs []int) bool {
+	for _, xi := range xs {
+		if x == xi {
+			return false
+		}
+	}
+	return true
+}
