@@ -1,17 +1,21 @@
 package intsect2
 
 func intersect(nums1 []int, nums2 []int) []int {
-	freq1 := make(map[int]int)
-	for _, n := range nums1 {
-		freq1[n]++
+	if len(nums1) > len(nums2) {
+		return intersect(nums2, nums1)
 	}
-	var result []int
+	freq := make(map[int]int)
+	for _, n := range nums1 {
+		freq[n]++
+	}
+	var k int
 	for _, n := range nums2 {
-		fq1, ok1 := freq1[n]
-		if ok1 && fq1 > 0 {
-			result = append(result, n)
-			freq1[n]--
+		fq, ok := freq[n]
+		if ok && fq > 0 {
+			nums1[k] = n
+			k++
+			freq[n]--
 		}
 	}
-	return result
+	return nums1[:k]
 }
