@@ -38,21 +38,21 @@ func findMedianSortedArrays2(nums1 []int, nums2 []int) float64 {
 	size := m + n
 	lo, hi := 0, m
 	for lo <= hi {
-		elemsFrom1 := lo + (hi-lo)/2
-		elemsFrom2 := (m+n+1)/2 - elemsFrom1
-		l1 := maxFromLeftHalf(nums1, elemsFrom1)
-		l2 := maxFromLeftHalf(nums2, elemsFrom2)
-		r1 := minFromRightHalf(nums1, elemsFrom1, m)
-		r2 := minFromRightHalf(nums2, elemsFrom2, n)
-		if l1 <= r2 && l2 <= r1 {
+		mid1 := int((uint32(lo) + uint32(hi)) >> 1)
+		mid2 := (m+n+1)/2 - mid1
+		left1 := maxFromLeftHalf(nums1, mid1)
+		left2 := maxFromLeftHalf(nums2, mid2)
+		right1 := minFromRightHalf(nums1, mid1, m)
+		right2 := minFromRightHalf(nums2, mid2, n)
+		if left1 <= right2 && left2 <= right1 {
 			if size%2 == 0 {
-				return float64(max(l1, l2)+min(r1, r2)) / 2
+				return float64(max(left1, left2)+min(right1, right2)) / 2
 			}
-			return float64(max(l1, l2))
-		} else if l1 > r2 {
-			hi = elemsFrom1 - 1
+			return float64(max(left1, left2))
+		} else if left1 > right2 {
+			hi = mid1 - 1
 		} else {
-			lo = elemsFrom1 + 1
+			lo = mid1 + 1
 		}
 	}
 	return 0
