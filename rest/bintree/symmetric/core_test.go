@@ -28,6 +28,7 @@ func TestIsSymmetric(t *testing.T) {
 		{[]int{0, 1, 2, 2, 3, 4, 4, 3}, true},
 		{[]int{0, 1, 2, 2, 3, 4, 4, 3, 5, 6, 7, 8, 8, 7, 6, 5}, true},
 		{[]int{0, 1, 2, 2, math.MaxInt64, 3, math.MaxInt64, 3}, false},
+		{[]int{0, 9, -42, -42, math.MaxInt64, 76, 76, math.MaxInt64, math.MaxInt64, math.MaxInt64, math.MaxInt64, 13, math.MaxInt64, 13, math.MaxInt64, math.MaxInt64}, false},
 	}
 	for _, test := range tests {
 		root := makeTree(test.nodes, 1)
