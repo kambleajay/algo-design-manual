@@ -30,9 +30,9 @@ func TestSerialization(t *testing.T) {
 		want  string
 	}{
 		{nil, "#"},
-		{[]int{0, 1, 2, 3, math.MaxInt64, math.MaxInt64, 4, 5}, "1,2,3,#,#,4,5"},
-		{[]int{0, 3, 5, 1, 6, 2, 0, 8, math.MaxInt64, math.MaxInt64, 7, 4}, "3,5,1,6,2,0,8,#,#,7,4,#,#,#,#"},
-		{[]int{0, 1, 2, 3, math.MaxInt64, math.MaxInt64, 4, 5, math.MaxInt64, math.MaxInt64, math.MaxInt64, math.MaxInt64, 6, 7, math.MaxInt64, math.MaxInt64}, "1,2,3,#,#,4,5,#,#,#,#,6,7,#,#"},
+		{[]int{0, 1, 2, 3, math.MaxInt64, math.MaxInt64, 4, 5}, "1,2,#,#,3,4,#,#,5,#,#"},
+		{[]int{0, 3, 5, 1, 6, 2, 0, 8, math.MaxInt64, math.MaxInt64, 7, 4}, "3,5,6,#,#,2,7,#,#,4,#,#,1,0,#,#,8,#,#"},
+		{[]int{0, 1, 2, 3, math.MaxInt64, math.MaxInt64, 4, 5, math.MaxInt64, math.MaxInt64, math.MaxInt64, math.MaxInt64, 6, 7, math.MaxInt64, math.MaxInt64}, "1,2,#,#,3,4,6,#,#,7,#,#,5,#,#"},
 	}
 	for _, test := range tests {
 		root := makeTreeTest(test.nodes, 1)
@@ -50,9 +50,9 @@ func TestDeserialization(t *testing.T) {
 		nodes []int
 	}{
 		{"#", nil},
-		{"1,2,3,#,#,4,5", []int{0, 1, 2, 3, math.MaxInt64, math.MaxInt64, 4, 5}},
-		{"3,5,1,6,2,0,8,#,#,7,4,#,#,#,#", []int{0, 3, 5, 1, 6, 2, 0, 8, math.MaxInt64, math.MaxInt64, 7, 4}},
-		{"1,2,3,#,#,4,5,#,#,#,#,6,7,#,#", []int{0, 1, 2, 3, math.MaxInt64, math.MaxInt64, 4, 5, math.MaxInt64, math.MaxInt64, math.MaxInt64, math.MaxInt64, 6, 7, math.MaxInt64, math.MaxInt64}},
+		{"1,2,#,#,3,4,#,#,5,#,#", []int{0, 1, 2, 3, math.MaxInt64, math.MaxInt64, 4, 5}},
+		{"3,5,6,#,#,2,7,#,#,4,#,#,1,0,#,#,8,#,#", []int{0, 3, 5, 1, 6, 2, 0, 8, math.MaxInt64, math.MaxInt64, 7, 4}},
+		{"1,2,#,#,3,4,6,#,#,7,#,#,5,#,#", []int{0, 1, 2, 3, math.MaxInt64, math.MaxInt64, 4, 5, math.MaxInt64, math.MaxInt64, math.MaxInt64, math.MaxInt64, 6, 7, math.MaxInt64, math.MaxInt64}},
 	}
 	for _, test := range tests {
 		want := makeTreeTest(test.nodes, 1)
