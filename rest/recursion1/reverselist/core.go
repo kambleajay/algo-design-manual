@@ -14,7 +14,7 @@ func (ln *ListNode) String() string {
 	return fmt.Sprintf("%d->%s", ln.Val, ln.Next)
 }
 
-func reverseList(head *ListNode) *ListNode {
+func reverseListIter(head *ListNode) *ListNode {
 	var first, second *ListNode
 	second = head
 	for second != nil {
@@ -24,4 +24,18 @@ func reverseList(head *ListNode) *ListNode {
 		second = third
 	}
 	return first
+}
+
+func reverseListRecur(head *ListNode) *ListNode {
+	if head == nil || head.Next == nil {
+		return head
+	}
+	headNext := reverseListRecur(head.Next)
+	head.Next.Next = head
+	head.Next = nil
+	return headNext
+}
+
+func reverseList(head *ListNode) *ListNode {
+	return reverseListRecur(head)
 }
